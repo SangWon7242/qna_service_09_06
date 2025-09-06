@@ -2,13 +2,19 @@ package com.sbs.qnaService;
 
 import com.sbs.qnaService.boundedContext.question.entity.Question;
 import com.sbs.qnaService.boundedContext.question.repository.QuestionRepository;
+import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -35,4 +41,14 @@ class QnaServiceApplicationTests {
     questionRepository.save(q2);  // 두번째 질문 저장
 	}
 
+  @Test
+  @DisplayName("findAll")
+  void t2() {
+    // SELECT * FROM question;
+    List<Question> all = questionRepository.findAll();
+    assertEquals(2, all.size());
+
+    Question q = all.get(0);
+    assertEquals("sbb가 무엇인가요?", q.getSubject());
+  }
 }
