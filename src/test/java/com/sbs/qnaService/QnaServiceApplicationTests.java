@@ -67,7 +67,7 @@ class QnaServiceApplicationTests {
   @Test
   @DisplayName("findBySubject")
   void t4() {
-    // SELECT * FROM question WHERE subject = "sbb가 무엇인가요?";
+    // SELECT * FROM question WHERE subject = 'sbb가 무엇인가요?';
     Question q = questionRepository.findBySubject("sbb가 무엇인가요?");
     assertEquals(1, q.getId());
   }
@@ -75,8 +75,8 @@ class QnaServiceApplicationTests {
   /*
   SELECT *
   FROM question
-  WHERE subject = "sbb가 무엇인가요?"
-  AND content = "sbb에 대해서 알고 싶습니다.";
+  WHERE subject = 'sbb가 무엇인가요?'
+  AND content = 'sbb에 대해서 알고 싶습니다.';
   */
   @Test
   @DisplayName("findBySubjectAndContent")
@@ -84,5 +84,18 @@ class QnaServiceApplicationTests {
     Question q = questionRepository.findBySubjectAndContent(
         "sbb가 무엇인가요?", "sbb에 대해서 알고 싶습니다.");
     assertEquals(1, q.getId());
+  }
+
+  /*
+  SELECT *
+  FROM question
+  WHERE subject LIKE 'sbb%';
+  */
+  @Test
+  @DisplayName("findBySubjectLike")
+  void t6() {
+    List<Question> qList = questionRepository.findBySubjectLike("sbb%");
+    Question q = qList.get(0);
+    assertEquals("sbb가 무엇인가요?", q.getSubject());
   }
 }
