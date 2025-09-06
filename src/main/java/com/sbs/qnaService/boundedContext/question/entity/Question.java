@@ -1,9 +1,12 @@
 package com.sbs.qnaService.boundedContext.question.entity;
 
+import com.sbs.qnaService.boundedContext.answer.entity.Answer;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @AllArgsConstructor
@@ -24,4 +27,9 @@ public class Question {
   private String content;
 
   private LocalDateTime createDate; // Date Time
+
+  // mappedBy = "question" -> Answer 필드에 있는 question와 매핑
+  // CascadeType.REMOVE : 질문이 삭제되면 그 안에 달려있는 답변도 같이 삭제
+  @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
+  private List<Answer> answerList = new ArrayList<>();
 }
