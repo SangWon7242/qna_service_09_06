@@ -13,6 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -50,5 +51,16 @@ class QnaServiceApplicationTests {
 
     Question q = all.get(0);
     assertEquals("sbb가 무엇인가요?", q.getSubject());
+  }
+
+  @Test
+  @DisplayName("findById")
+  void t3() {
+    // SELECT * FROM question WHERE id = 1;
+    Optional<Question> oq = questionRepository.findById(1);
+    if(oq.isPresent()) { // isPresent : 값이 존재하는지 확인
+      Question q = oq.get();
+      assertEquals("sbb가 무엇인가요?", q.getSubject());
+    }
   }
 }
