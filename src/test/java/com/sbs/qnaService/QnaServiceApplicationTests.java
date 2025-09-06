@@ -63,4 +63,12 @@ class QnaServiceApplicationTests {
       assertEquals("sbb가 무엇인가요?", q.getSubject());
     }
   }
+
+  @Test
+  @DisplayName("findBySubject")
+  void t4() {
+    // SELECT * FROM question WHERE subject = "sbb가 무엇인가요?";
+    Question q = questionRepository.findBySubject("sbb가 무엇인가요?");
+    assertEquals(1, q.getId());
+  }
 }
