@@ -15,6 +15,7 @@ import java.util.List;
 @Setter
 @Builder
 @Entity // 아래 Question 클래스는 엔티티 클래스이다.
+@ToString
 public class Question {
   @Id // Primary Key
   @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto Increment

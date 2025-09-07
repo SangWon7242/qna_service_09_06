@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 @Entity
+@ToString
 public class Answer {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,5 +25,6 @@ public class Answer {
 
   // 하나의 질문의 답변이 여러개일 수 있다.
   @ManyToOne // 좌측은 많고 우측은 하나다.
+  @ToString.Exclude // ToString 대상에서 제외
   private Question question;
 }
