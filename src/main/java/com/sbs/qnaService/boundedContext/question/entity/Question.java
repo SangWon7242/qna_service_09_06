@@ -30,6 +30,7 @@ public class Question {
 
   // mappedBy = "question" -> Answer 필드에 있는 question와 매핑
   // CascadeType.REMOVE : 질문이 삭제되면 그 안에 달려있는 답변도 같이 삭제
+  // fetch = FetchType.EAGER : 즉시 로딩을 통해 질문과 함께 답변도 같이 조회가 가능
   @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
   @Builder.Default // 빌더 패턴으로 객체를 생성할 때 필드 초기화를 할 수 있도록 함
   private List<Answer> answerList = new ArrayList<>();

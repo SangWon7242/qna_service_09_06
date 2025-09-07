@@ -224,17 +224,19 @@ class QnaServiceApplicationTests {
     assertEquals(2, a.getQuestion().getId());
   }
 
-  @Transactional
+  @Transactional // 테스트에서는 기본적으로 @Transactional 없이 DB 연결이 이어지지 않는다.
   @Test
   @DisplayName("질문을 통해 답변 찾기")
   void t11() {
+    // SELECT * FROM question WHERE id = 2;
     Optional<Question> oq = questionRepository.findById(2);
     assertTrue(oq.isPresent());
-    Question q = oq.get();
+    Question q = oq.get(); // get을 한 뒤에 DB 연결을 끊음
 
     // findById 메서드 실행 후 DB 연결이 끊어짐
     // @Transactional : 해당 메서드가 종료될 때까지 DB연결이 유지가 됨
 
+    // SELECT * FROM answer WHERE question_id = 2;
     List<Answer> answerList = q.getAnswerList();
 
     assertEquals(1, answerList.size());
