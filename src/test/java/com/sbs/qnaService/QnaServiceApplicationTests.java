@@ -223,4 +223,21 @@ class QnaServiceApplicationTests {
     // 답변 데이터의 question_id가 2번이냐?
     assertEquals(2, a.getQuestion().getId());
   }
+
+  @Transactional
+  @Test
+  @DisplayName("질문을 통해 답변 찾기")
+  void t11() {
+    Optional<Question> oq = questionRepository.findById(2);
+    assertTrue(oq.isPresent());
+    Question q = oq.get();
+
+    // findById 메서드 실행 후 DB 연결이 끊어짐
+    // @Transactional : 해당 메서드가 종료될 때까지 DB연결이 유지가 됨
+
+    List<Answer> answerList = q.getAnswerList();
+
+    assertEquals(1, answerList.size());
+    assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
+  }
 }
