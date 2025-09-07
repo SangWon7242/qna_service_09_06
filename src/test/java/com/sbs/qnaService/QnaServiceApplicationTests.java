@@ -224,9 +224,11 @@ class QnaServiceApplicationTests {
     assertEquals(2, a.getQuestion().getId());
   }
 
-  @Transactional // 테스트에서는 기본적으로 @Transactional 없이 DB 연결이 이어지지 않는다.
+
   @Test
   @DisplayName("질문을 통해 답변 찾기")
+  @Transactional // 테스트에서는 기본적으로 @Transactional 없이 DB 연결이 이어지지 않는다.
+  @Rollback(false) // 테스트 메서드가 끝난 후에도 트랜잭션이 롤백되지 않고 커밋이 된다.
   void t11() {
     // SELECT * FROM question WHERE id = 2;
     Optional<Question> oq = questionRepository.findById(2);
