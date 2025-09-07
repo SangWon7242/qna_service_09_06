@@ -55,12 +55,12 @@ class QnaServiceApplicationTests {
     questionRepository.save(q2);
 
     // 답변 데이터 생성
-    Answer a = new Answer();
-    a.setContent("네 자동으로 생성됩니다.");
-    a.setQuestion(q2);
-    a.setCreateDate(LocalDateTime.now());
+    Answer a1 = new Answer();
+    a1.setContent("네 자동으로 생성됩니다.");
+    a1.setCreateDate(LocalDateTime.now());
+    q2.addAnswer(a1); // 질문과 답변을 한 로직에서 처리 가능
 
-    answerRepository.save(a);
+    answerRepository.save(a1);
   }
 
 	@Test
