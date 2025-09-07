@@ -1,5 +1,7 @@
 package com.sbs.qnaService;
 
+import com.sbs.qnaService.boundedContext.answer.entity.Answer;
+import com.sbs.qnaService.boundedContext.answer.repository.AnswerRepository;
 import com.sbs.qnaService.boundedContext.question.entity.Question;
 import com.sbs.qnaService.boundedContext.question.repository.QuestionRepository;
 import jakarta.transaction.Transactional;
@@ -24,6 +26,9 @@ class QnaServiceApplicationTests {
 
   @Autowired
   private QuestionRepository questionRepository;
+
+  @Autowired
+  private AnswerRepository answerRepository;
 
   @BeforeEach // 테스트 케이스 실행 전에 한번 실행
   void beforeEach() {
@@ -153,5 +158,47 @@ class QnaServiceApplicationTests {
     Question q = oq.get();
     questionRepository.delete(q);
     assertEquals(1, questionRepository.count());
+  }
+
+  // 질문 데이터 가져오기
+  /*
+  SELECT *
+  FROM question AS q1
+  WHERE q1.id = ?
+  */
+
+  // 특정 질문에 대한 답변 추가
+  /*
+  INSERT INTO answer
+  SET content = ?,
+  create_date = ?,
+  question_id = ?;
+  */
+
+  @Test
+  @DisplayName("답변 데이터 생성 후 저장")
+  void t9() {
+    // v1
+    Optional<Question> oq = questionRepository.findById(2);
+    assertTrue(oq.isPresent());
+    Question q = oq.get();
+
+    // v2
+    // Optional q = questionRepository.findById(2).get();
+
+    Answer a = new Answer();
+    a.setContent("네 자동으로 생성됩니다.");
+    a.setQuestion(q);  // 어떤 질문의 답변인지 알기위해서 Question 객체가 필요하다.
+    a.setCreateDate(LocalDateTime.now());
+
+    /*
+    Answer a2 = Answer.builder()
+        .content("네 자동으로 생성됩니다.")
+        .question(q)
+        .createDate(LocalDateTime.now())
+        .build();
+     */
+
+    answerRepository.save(a);
   }
 }
