@@ -33,6 +33,10 @@ class QnaServiceApplicationTests {
   @BeforeEach // 테스트 케이스 실행 전에 한번 실행
   void beforeEach() {
     // 질문 데이터 삭제
+    answerRepository.deleteAll();
+    answerRepository.clearAutoIncrement();
+
+    // 질문 데이터 삭제
     questionRepository.deleteAll();
     questionRepository.clearAutoIncrement();
     
@@ -49,6 +53,14 @@ class QnaServiceApplicationTests {
         .build();
 
     questionRepository.save(q2);
+
+    // 답변 데이터 생성
+    Answer a = new Answer();
+    a.setContent("네 자동으로 생성됩니다.");
+    a.setQuestion(q2);
+    a.setCreateDate(LocalDateTime.now());
+
+    answerRepository.save(a);
   }
 
 	@Test
@@ -200,5 +212,15 @@ class QnaServiceApplicationTests {
      */
 
     answerRepository.save(a);
+  }
+
+  @Test
+  @DisplayName("답변 데이터 조회")
+  void t10() {
+    Optional<Answer> oa = answerRepository.findById(1);
+    assertTrue(oa.isPresent());
+    Answer a = oa.get();
+    // 답변 데이터의 question_id가 2번이냐?
+    assertEquals(2, a.getQuestion().getId());
   }
 }
