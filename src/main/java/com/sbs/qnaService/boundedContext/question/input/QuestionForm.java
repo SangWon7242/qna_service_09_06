@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class QuestionFrom {
+public class QuestionForm {
   @NotEmpty(message="제목은 필수항목입니다.")
   @Size(max=200, message = "제목은 200자 이내로 입력해주세요.")
   private String subject;

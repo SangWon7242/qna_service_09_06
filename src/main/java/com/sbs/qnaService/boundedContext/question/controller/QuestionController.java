@@ -1,16 +1,17 @@
 package com.sbs.qnaService.boundedContext.question.controller;
 
 import com.sbs.qnaService.boundedContext.question.entity.Question;
-import com.sbs.qnaService.boundedContext.question.input.QuestionFrom;
-import com.sbs.qnaService.boundedContext.question.repository.QuestionRepository;
+import com.sbs.qnaService.boundedContext.question.input.QuestionForm;
 import com.sbs.qnaService.boundedContext.question.service.QuestionService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -21,12 +22,12 @@ public class QuestionController {
   private final QuestionService questionService;
 
   @GetMapping("/create")
-  public String questionCreate() {
+  public String questionCreate(QuestionForm questionForm) {
     return "question/question_form";
   }
 
   @PostMapping("/create")
-  public String questionCreate(@Valid QuestionFrom questionFrom, BindingResult bindingResult) {
+  public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult) {
     // 에러 메시지를 가지고 있니?
     // 가지고 있으면 true, 가지고 있지 않으면 false
     if (bindingResult.hasErrors()) {
@@ -34,7 +35,7 @@ public class QuestionController {
       return "question/question_form";
     }
 
-    questionService.create(questionFrom.getSubject(), questionFrom.getContent());
+    questionService.create(questionForm.getSubject(), questionForm.getContent());
     return "redirect:/question/list"; // 질문 저장후 질문목록으로 이동
   }
 
