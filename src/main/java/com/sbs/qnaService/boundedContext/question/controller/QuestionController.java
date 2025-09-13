@@ -3,6 +3,7 @@ package com.sbs.qnaService.boundedContext.question.controller;
 import com.sbs.qnaService.boundedContext.question.entity.Question;
 import com.sbs.qnaService.boundedContext.question.repository.QuestionRepository;
 import com.sbs.qnaService.boundedContext.question.service.QuestionService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,8 +24,6 @@ public class QuestionController {
     // SELECT * FROM question;
     List<Question> questionList = questionService.getList();
     model.addAttribute("questionList", questionList);
-
-    System.out.println("안녕하세요.");
 
     return "question/question_list";
   }
