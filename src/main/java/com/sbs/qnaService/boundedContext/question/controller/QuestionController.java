@@ -5,9 +5,11 @@ import com.sbs.qnaService.boundedContext.question.input.QuestionFrom;
 import com.sbs.qnaService.boundedContext.question.repository.QuestionRepository;
 import com.sbs.qnaService.boundedContext.question.service.QuestionService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,27 +26,15 @@ public class QuestionController {
   }
 
   @PostMapping("/create")
-  public String questionCreate(QuestionFrom questionFrom) {
-    String subject = questionFrom.getSubject();
-    String content = questionFrom.getContent();
-
-    if (subject == null || subject.trim().isEmpty()) {
-      throw new RuntimeException("제목을 입력해주세요.");
+  public String questionCreate(@Valid QuestionFrom questionFrom, BindingResult bindingResult) {
+    // 에러 메시지를 가지고 있니?
+    // 가지고 있으면 true, 가지고 있지 않으면 false
+    if (bindingResult.hasErrors()) {
+      // 에러 메시지가 존재하면 question_form.html로 이동
+      return "question/question_form";
     }
 
-    if (subject.trim().length() > 200) {
-      throw new RuntimeException("제목을 200자 이하로 입력해주세요.");
-    }
-
-    if (content == null || content.trim().isEmpty()) {
-      throw new RuntimeException("내용을 입력해주세요.");
-    }
-
-    if (content.trim().length() > 20000) {
-      throw new RuntimeException("내용을 20000자 이하로 입력해주세요.");
-    }
-
-    questionService.create(subject, content);
+    questionService.create(questionFrom.getSubject(), questionFrom.getContent());
     return "redirect:/question/list"; // 질문 저장후 질문목록으로 이동
   }
 
