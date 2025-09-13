@@ -1,6 +1,7 @@
 package com.sbs.qnaService.boundedContext.question.controller;
 
 import com.sbs.qnaService.boundedContext.question.entity.Question;
+import com.sbs.qnaService.boundedContext.question.input.QuestionFrom;
 import com.sbs.qnaService.boundedContext.question.repository.QuestionRepository;
 import com.sbs.qnaService.boundedContext.question.service.QuestionService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +24,10 @@ public class QuestionController {
   }
 
   @PostMapping("/create")
-  public String questionCreate(String subject, String content) {
+  public String questionCreate(QuestionFrom questionFrom) {
+    String subject = questionFrom.getSubject();
+    String content = questionFrom.getContent();
+
     if (subject == null || subject.trim().isEmpty()) {
       throw new RuntimeException("제목을 입력해주세요.");
     }
@@ -35,7 +39,7 @@ public class QuestionController {
     if (content == null || content.trim().isEmpty()) {
       throw new RuntimeException("내용을 입력해주세요.");
     }
-    
+
     if (content.trim().length() > 20000) {
       throw new RuntimeException("내용을 20000자 이하로 입력해주세요.");
     }
