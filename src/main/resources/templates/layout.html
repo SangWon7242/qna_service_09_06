@@ -15,14 +15,24 @@
   <!-- 공통 css 연결 -->
   <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
 </head>
-<body>
+<body class="min-vh-100 d-flex flex-column">
   <header class="top-bar">
     <!-- 네비게이션바 -->
     <nav th:replace="~{navbar :: navbarFragment}"></nav>
   </header>
 
-  <!-- 기본 템플릿 안에 삽입될 내용 Start -->
-  <th:block layout:fragment="content"></th:block>
-  <!-- 기본 템플릿 안에 삽입될 내용 End -->
+  <main class="content-wrap flex-grow-1">
+    <!-- 기본 템플릿 안에 삽입될 내용 Start -->
+    <th:block layout:fragment="content"></th:block>
+    <!-- 기본 템플릿 안에 삽입될 내용 End -->
+  </main>
+
+  <footer class="bottom-bar bg-dark text-white">
+    <div class="container h-100 d-flex align-items-center justify-content-center">
+      <div class="copyright">
+        Copyright © SBS아카데미. All rights reserved.
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
