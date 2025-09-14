@@ -1,5 +1,6 @@
 package com.sbs.qnaService.boundedContext.question.controller;
 
+import com.sbs.qnaService.boundedContext.answer.input.AnswerForm;
 import com.sbs.qnaService.boundedContext.question.entity.Question;
 import com.sbs.qnaService.boundedContext.question.input.QuestionForm;
 import com.sbs.qnaService.boundedContext.question.service.QuestionService;
@@ -50,7 +51,7 @@ public class QuestionController {
   }
 
   @GetMapping("/detail/{id}")
-  public String detail(Model model, @PathVariable("id") Integer id) {
+  public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm) {
     Question question = questionService.getQuestion(id);
     model.addAttribute("question", question);
 
