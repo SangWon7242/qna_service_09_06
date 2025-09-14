@@ -4,6 +4,7 @@ import com.sbs.qnaService.boundedContext.answer.entity.Answer;
 import com.sbs.qnaService.boundedContext.answer.repository.AnswerRepository;
 import com.sbs.qnaService.boundedContext.question.entity.Question;
 import com.sbs.qnaService.boundedContext.question.repository.QuestionRepository;
+import com.sbs.qnaService.boundedContext.question.service.QuestionService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,6 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -26,6 +28,9 @@ class QnaServiceApplicationTests {
 
   @Autowired
   private QuestionRepository questionRepository;
+
+  @Autowired
+  private QuestionService questionService;
 
   @Autowired
   private AnswerRepository answerRepository;
@@ -243,5 +248,15 @@ class QnaServiceApplicationTests {
 
     assertEquals(1, answerList.size());
     assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
+  }
+
+  @Test
+  @DisplayName("대량의 테스트 데이터 만들기")
+  void t12() {
+    IntStream.rangeClosed(3, 300)
+        .forEach(no ->
+            questionService.create(
+                "테스트 제목입니다. %d".formatted(no),
+                "테스트 내용입니다%d".formatted(no)));
   }
 }
