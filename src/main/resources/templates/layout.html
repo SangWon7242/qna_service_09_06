@@ -16,15 +16,23 @@
   <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
 </head>
 <body>
-  <header class="top-bar navbar navbar-expand-xl navbar-dark bg-dark text-white">
-    <div class="container">
-      <nav class="menu-box">
-        <ul class="d-flex">
-          <li><a href="#">질문 작성</a></li>
-          <li><a href="/question/list">질문 리스트</a></li>
-        </ul>
-      </nav>
-    </div>
+  <header class="top-bar">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">SBB</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="#">로그인</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
   </header>
 
   <!-- 기본 템플릿 안에 삽입될 내용 Start -->
