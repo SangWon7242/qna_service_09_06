@@ -7,11 +7,13 @@ import com.sbs.qnaService.boundedContext.question.service.QuestionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -40,8 +42,6 @@ public class QuestionController {
 
   @GetMapping("/list")
   public String showList(Model model, @RequestParam(defaultValue="0") int page) {
-    // findAll() : 모든 데이터를 조회
-    // SELECT * FROM question;
     Page<Question> paging = questionService.getList(page);
     model.addAttribute("paging", paging);
 
