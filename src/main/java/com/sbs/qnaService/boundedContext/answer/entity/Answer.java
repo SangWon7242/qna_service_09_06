@@ -1,6 +1,7 @@
 package com.sbs.qnaService.boundedContext.answer.entity;
 
 import com.sbs.qnaService.boundedContext.question.entity.Question;
+import com.sbs.qnaService.boundedContext.user.entity.SiteUser;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,4 +28,7 @@ public class Answer {
   @ManyToOne // 좌측은 많고 우측은 하나다.
   @ToString.Exclude // ToString 대상에서 제외
   private Question question;
+
+  @ManyToOne
+  private SiteUser author;
 }

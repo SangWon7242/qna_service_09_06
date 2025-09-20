@@ -2,13 +2,16 @@ package com.sbs.qnaService;
 
 import com.sbs.qnaService.boundedContext.answer.entity.Answer;
 import com.sbs.qnaService.boundedContext.answer.repository.AnswerRepository;
+import com.sbs.qnaService.boundedContext.answer.service.AnswerService;
 import com.sbs.qnaService.boundedContext.question.entity.Question;
 import com.sbs.qnaService.boundedContext.question.repository.QuestionRepository;
 import com.sbs.qnaService.boundedContext.question.service.QuestionService;
+import com.sbs.qnaService.boundedContext.user.entity.SiteUser;
 import com.sbs.qnaService.boundedContext.user.repository.UserRepository;
 import com.sbs.qnaService.boundedContext.user.service.UserService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +46,9 @@ class QnaServiceApplicationTests {
   @Autowired
   private AnswerRepository answerRepository;
 
+  @Autowired
+  private AnswerService answerService;
+
   @BeforeEach // 테스트 케이스 실행 전에 한번 실행
   void beforeEach() {
     // 답변 데이터 삭제
@@ -58,48 +64,24 @@ class QnaServiceApplicationTests {
     userRepository.clearAutoIncrement();
 
     // 회원 2명 생성
-    userService.create("user1", "user1@test.com", "1234");
-    userService.create("user2", "user2@test.com", "1234");
-    
-    Question q1 = new Question();
-    q1.setSubject("sbb가 무엇인가요?");
-    q1.setContent("sbb에 대해서 알고 싶습니다.");
-    q1.setCreateDate(LocalDateTime.now());
-    questionRepository.save(q1);
+    SiteUser user1 = userService.create("user1", "user1@test.com", "1234");
+    SiteUser user2 = userService.create("user2", "user2@test.com", "1234");
 
-    Question q2 = Question.builder()
-        .subject("스프링부트 모델 질문입니다.")
-        .content("id는 자동으로 생성되나요?")
-        .createDate(LocalDateTime.now())
-        .build();
-
-    questionRepository.save(q2);
+    Question q1 = questionService.create("sbb가 무엇인가요?", "sbb에 대해서 알고 싶습니다.", user1);
+    Question q2 = questionService.create("스프링부트 모델 질문입니다.", "id는 자동으로 생성되나요?", user2);
 
     // 답변 데이터 생성
-    Answer a1 = new Answer();
-    a1.setContent("네 자동으로 생성됩니다.");
-    a1.setCreateDate(LocalDateTime.now());
+    Answer a1 = answerService.create(q2, "네 자동으로 생성됩니다.", user2);
     q2.addAnswer(a1); // 질문과 답변을 한 로직에서 처리 가능
-
-    answerRepository.save(a1);
   }
 
 	@Test
   @DisplayName("데이터 저장")
 	void t1() {
-    Question q1 = new Question();
-    q1.setSubject("스프링부트 학습은 어떻게 해야 하나요?");
-    q1.setContent("스프링부트 학습은 처음입니다.");
-    q1.setCreateDate(LocalDateTime.now());
-    questionRepository.save(q1);  // 첫번째 질문 저장
+    SiteUser user1 = userService.getUser("user1");
 
-    Question q2 = Question.builder()
-        .subject("자바를 이용한 객체지향 설계는 어떻게 하나요?")
-        .content("자바 객체지향 설계 방법을 모르겠습니다.")
-        .createDate(LocalDateTime.now())
-        .build();
-
-    questionRepository.save(q2);  // 두번째 질문 저장
+    questionService.create("스프링부트 학습은 어떻게 해야 하나요?", "스프링부트 학습은 처음입니다.", user1);
+    questionService.create("자바를 이용한 객체지향 설계는 어떻게 하나요?", "자바 객체지향 설계 방법을 모르겠습니다.", user1);
 	}
 
   @Test
@@ -211,28 +193,14 @@ class QnaServiceApplicationTests {
   @Test
   @DisplayName("답변 데이터 생성 후 저장")
   void t9() {
-    // v1
     Optional<Question> oq = questionRepository.findById(2);
     assertTrue(oq.isPresent());
     Question q = oq.get();
 
-    // v2
-    // Optional q = questionRepository.findById(2).get();
+    SiteUser user2 = userService.getUser("user2");
+    Answer a = answerService.create(q, "네 자동으로 생성됩니다.", user2);
 
-    Answer a = new Answer();
-    a.setContent("네 자동으로 생성됩니다.");
-    a.setQuestion(q);  // 어떤 질문의 답변인지 알기위해서 Question 객체가 필요하다.
-    a.setCreateDate(LocalDateTime.now());
-
-    /*
-    Answer a2 = Answer.builder()
-        .content("네 자동으로 생성됩니다.")
-        .question(q)
-        .createDate(LocalDateTime.now())
-        .build();
-     */
-
-    answerRepository.save(a);
+    assertEquals("네 자동으로 생성됩니다.", a.getContent());
   }
 
   @Test
@@ -268,11 +236,14 @@ class QnaServiceApplicationTests {
 
   @Test
   @DisplayName("대량의 테스트 데이터 만들기")
+  @Disabled
   void t12() {
+    SiteUser user2 = userService.getUser("user2");
+
     IntStream.rangeClosed(3, 300)
         .forEach(no ->
             questionService.create(
                 "테스트 제목입니다. %d".formatted(no),
-                "테스트 내용입니다%d".formatted(no)));
+                "테스트 내용입니다%d".formatted(no), user2));
   }
 }

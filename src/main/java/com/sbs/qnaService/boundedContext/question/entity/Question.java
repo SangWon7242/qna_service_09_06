@@ -1,6 +1,7 @@
 package com.sbs.qnaService.boundedContext.question.entity;
 
 import com.sbs.qnaService.boundedContext.answer.entity.Answer;
+import com.sbs.qnaService.boundedContext.user.entity.SiteUser;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,6 +29,9 @@ public class Question {
   private String content;
 
   private LocalDateTime createDate; // Date Time
+
+  @ManyToOne
+  private SiteUser author;
 
   // mappedBy = "question" -> Answer 필드에 있는 question와 매핑
   // CascadeType.REMOVE : 질문이 삭제되면 그 안에 달려있는 답변도 같이 삭제

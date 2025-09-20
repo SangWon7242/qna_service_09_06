@@ -2,9 +2,12 @@ package com.sbs.qnaService.boundedContext.user.service;
 
 import com.sbs.qnaService.boundedContext.user.entity.SiteUser;
 import com.sbs.qnaService.boundedContext.user.repository.UserRepository;
+import com.sbs.qnaService.global.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -20,5 +23,15 @@ public class UserService {
     user.setPassword(passwordEncoder.encode(password));
     userRepository.save(user);
     return user;
+  }
+
+  public SiteUser getUser(String username) {
+    Optional<SiteUser> siteUser = userRepository.findByUsername(username);
+
+    if (siteUser.isPresent()) {
+      return siteUser.get();
+    } else {
+      throw new DataNotFoundException("siteuser not found");
+    }
   }
 }
