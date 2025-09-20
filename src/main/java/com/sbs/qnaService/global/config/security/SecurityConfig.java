@@ -22,6 +22,9 @@ public class SecurityConfig {
   }
 
   @Bean
+  // 비밀번호 암호와 검증
+  // 인증 시 암호화된 비밀번호를 비교
+  // Bcrypt 알고리즘 사용
   PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
