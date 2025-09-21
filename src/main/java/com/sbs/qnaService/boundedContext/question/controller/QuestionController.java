@@ -4,35 +4,46 @@ import com.sbs.qnaService.boundedContext.answer.input.AnswerForm;
 import com.sbs.qnaService.boundedContext.question.entity.Question;
 import com.sbs.qnaService.boundedContext.question.input.QuestionForm;
 import com.sbs.qnaService.boundedContext.question.service.QuestionService;
+import com.sbs.qnaService.boundedContext.user.entity.SiteUser;
+import com.sbs.qnaService.boundedContext.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/question")
 @RequiredArgsConstructor
 public class QuestionController {
+  private final UserService userService;
   private final QuestionService questionService;
 
+  @PreAuthorize("isAuthenticated()")
   @GetMapping("/create")
   public String questionCreate(QuestionForm questionForm) {
     return "question/question_form";
   }
 
+  @PreAuthorize("isAuthenticated()")
   @PostMapping("/create")
-  public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult) {
-    // 에러 메시지를 가지고 있니?
-    // 가지고 있으면 true, 가지고 있지 않으면 false
+  public String questionCreate(
+      @Valid QuestionForm questionForm,
+      BindingResult bindingResult,
+      Principal principal) {
+
+    SiteUser siteUser = userService.getUser(principal.getName());
+
     if (bindingResult.hasErrors()) {
-      // 에러 메시지가 존재하면 question_form.html로 이동
       return "question/question_form";
     }
 
-    questionService.create(questionForm.getSubject(), questionForm.getContent());
+    questionService.create(questionForm.getSubject(), questionForm.getContent(), siteUser);
 
     return "redirect:/question/list"; // 질문 저장후 질문목록으로 이동
   }
