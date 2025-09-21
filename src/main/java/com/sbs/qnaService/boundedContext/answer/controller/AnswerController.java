@@ -49,7 +49,7 @@ public class AnswerController {
     // TODO: 답변을 저장한다.
     Answer answer = answerService.create(question, answerForm.getContent(), siteUser);
 
-    return "redirect:/question/detail/%s".formatted(id);
+    return "redirect:/question/detail/%s#answer_%s".formatted(answer.getQuestion().getId(), answer.getId());
   }
 
   @PreAuthorize("isAuthenticated()")
@@ -81,7 +81,7 @@ public class AnswerController {
 
     answerService.modify(answer, answerForm.getContent());
 
-    return "redirect:/question/detail/%s".formatted(answer.getQuestion().getId());
+    return "redirect:/question/detail/%s#answer_%s".formatted(answer.getQuestion().getId(), answer.getId());
   }
 
   @PreAuthorize("isAuthenticated()")
@@ -106,6 +106,6 @@ public class AnswerController {
 
     answerService.vote(answer, siteUser);
 
-    return String.format("redirect:/question/detail/%s", answer.getQuestion().getId());
+    return "redirect:/question/detail/%s#answer_%s".formatted(answer.getQuestion().getId(), answer.getId());
   }
 }
