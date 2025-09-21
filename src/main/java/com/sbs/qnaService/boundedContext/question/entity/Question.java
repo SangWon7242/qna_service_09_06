@@ -8,6 +8,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 @AllArgsConstructor
@@ -33,6 +34,9 @@ public class Question {
 
   @ManyToOne
   private SiteUser author;
+
+  @ManyToMany
+  Set<SiteUser> voter;
 
   // mappedBy = "question" -> Answer 필드에 있는 question와 매핑
   // CascadeType.REMOVE : 질문이 삭제되면 그 안에 달려있는 답변도 같이 삭제
