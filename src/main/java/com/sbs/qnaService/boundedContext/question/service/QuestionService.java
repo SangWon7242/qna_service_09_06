@@ -4,6 +4,8 @@ import com.sbs.qnaService.boundedContext.question.entity.Question;
 import com.sbs.qnaService.boundedContext.question.repository.QuestionRepository;
 import com.sbs.qnaService.boundedContext.user.entity.SiteUser;
 import com.sbs.qnaService.global.exception.DataNotFoundException;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -58,5 +60,12 @@ public class QuestionService {
     questionRepository.save(q);
 
     return q;
+  }
+
+  public void modify(Question question, String subject, String content) {
+    question.setSubject(subject);
+    question.setContent(content);
+    question.setModifyDate(LocalDateTime.now());
+    questionRepository.save(question);
   }
 }
