@@ -52,9 +52,10 @@ public class QuestionController {
   }
 
   @GetMapping("/list")
-  public String showList(Model model, @RequestParam(defaultValue="0") int page) {
-    Page<Question> paging = questionService.getList(page, null);
+  public String showList(Model model, @RequestParam(defaultValue="0") int page, String kw) {
+    Page<Question> paging = questionService.getList(page, kw);
     model.addAttribute("paging", paging);
+    model.addAttribute("kw", kw);
 
     return "question/question_list";
   }
