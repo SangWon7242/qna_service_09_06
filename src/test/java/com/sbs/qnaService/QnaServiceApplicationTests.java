@@ -249,21 +249,21 @@ class QnaServiceApplicationTests {
 
   @Test
   @DisplayName("검색, 질문 내용으로 검색")
-  void t14() {
+  void t13() {
     Page<Question> searchResult = questionService.getList(0, "sbb에 대해서 알고 싶습니다.");
     assertEquals(1, searchResult.getTotalElements());
   }
 
   @Test
   @DisplayName("검색, 질문자 이름으로 검색")
-  void t15() {
+  void t14() {
     Page<Question> searchResult = questionService.getList(0, "user1");
     assertEquals(1, searchResult.getTotalElements());
   }
 
   @Test
   @DisplayName("검색, 답변 내용으로 검색")
-  void t16() {
+  void t15() {
     Page<Question> searchResult = questionService.getList(0, "네 자동으로 생성됩니다.");
     assertEquals(1, searchResult.getContent().get(0).getId());
     assertEquals(1, searchResult.getTotalElements());
@@ -271,17 +271,15 @@ class QnaServiceApplicationTests {
 
   @Test
   @DisplayName("검색, 답변자 이름으로 검색")
-  void t17() {
+  void t16() {
     Page<Question> searchResult = questionService.getList(0, "user2");
     assertEquals(2, searchResult.getContent().get(0).getId());
     assertEquals(2, searchResult.getTotalElements());
   }
-  
 
   @Test
   @DisplayName("대량의 테스트 데이터 만들기")
-  @Disabled
-  void t13() {
+  void t17() {
     SiteUser user2 = userService.getUser("user2");
 
     IntStream.rangeClosed(3, 300)

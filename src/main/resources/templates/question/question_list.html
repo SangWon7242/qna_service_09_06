@@ -38,19 +38,20 @@
     </tbody>
   </table>
   
-  <nav th:if="${!paging.isEmpty()}">
-    <ul class="pagination justify-content-center">
+  <nav aria-label="Page navigation" th:if="${!paging.isEmpty()}"
+       class="d-flex justify-content-center" th:with="queryStrBase = '?kw=' + ${param.kw != null ? param.kw : '' }">
+    <ul class="pagination">
       <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-        <a class="page-link" th:href="@{|?page=${paging.number-1}|}">이전</a>
+        <a class="page-link" th:href="@{|${queryStrBase}&page=${paging.number-1}|}" aria-label="Prev">이전</a>
       </li>
       <li class="page-item"
           th:each="page : ${#numbers.sequence(0, paging.totalPages-1)}"
           th:if="${page >= paging.number-5 and page <= paging.number+5}"
           th:classappend="${page == paging.number} ? 'active'">
-        <a class="page-link" th:href="@{|/question/list?page=${page}|}" th:text="${page + 1}"></a>
+        <a class="page-link" th:href="@{|${queryStrBase}&page=${page}|}" th:text="${page + 1}"></a>
       </li>
       <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-        <a class="page-link" th:href="@{|?page=${paging.number+1}|}">다음</a>
+        <a class="page-link" th:href="@{|${queryStrBase}&page=${paging.number+1}|}" aria-label="Next">다음</a>
       </li>
     </ul>
   </nav>
